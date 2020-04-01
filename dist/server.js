@@ -81,32 +81,99 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/server/server.ts");
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/server/routes.ts":
-/*!******************************!*\
-  !*** ./src/server/routes.ts ***!
-  \******************************/
+/***/ "./src/server/db/connection.js":
+/*!*************************************!*\
+  !*** ./src/server/db/connection.js ***!
+  \*************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar express = __webpack_require__(/*! express */ \"express\");\r\nvar router = express.Router();\r\nrouter.get('/api/hello', function (req, res, next) {\r\n    res.json('World');\r\n});\r\nexports.default = router;\r\n\n\n//# sourceURL=webpack:///./src/server/routes.ts?");
+eval("var mysql = __webpack_require__(/*! mysql */ \"mysql\");\n\nmodule.exports = function () {\n  return mysql.createConnection({\n    //conexion original\n    host: \"localhost\",\n    user: \"root\",\n    password: \"\",\n    database: \"login\"\n  });\n};\n\n//# sourceURL=webpack:///./src/server/db/connection.js?");
 
 /***/ }),
 
-/***/ "./src/server/server.ts":
+/***/ "./src/server/db/login.js":
+/*!********************************!*\
+  !*** ./src/server/db/login.js ***!
+  \********************************/
+/*! exports provided: all, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"all\", function() { return all; });\n/* harmony import */ var _connection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./connection */ \"./src/server/db/connection.js\");\n/* harmony import */ var _connection__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_connection__WEBPACK_IMPORTED_MODULE_0__);\n\nvar all = function all() {\n  return new Promise(function (resolve, reject) {\n    _connection__WEBPACK_IMPORTED_MODULE_0___default()().query('SELECT * FROM usuarios', function (err, results) {\n      if (err) {\n        return reject(err);\n      }\n\n      resolve(results);\n    });\n  });\n};\n/* harmony default export */ __webpack_exports__[\"default\"] = ({\n  all: all\n});\n\n//# sourceURL=webpack:///./src/server/db/login.js?");
+
+/***/ }),
+
+/***/ "./src/server/routes.js":
 /*!******************************!*\
-  !*** ./src/server/server.ts ***!
+  !*** ./src/server/routes.js ***!
   \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ \"@babel/runtime/regenerator\");\n/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ \"@babel/runtime/helpers/asyncToGenerator\");\n/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_2__);\n\n\n\n\nvar login = __webpack_require__(/*! ./db/login */ \"./src/server/db/login.js\");\n\nvar path = __webpack_require__(/*! path */ \"path\");\n\nvar router = express__WEBPACK_IMPORTED_MODULE_2__[\"Router\"]();\nrouter.get('/usuarios', /*#__PURE__*/function () {\n  var _ref = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(req, res) {\n    var data;\n    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {\n      while (1) {\n        switch (_context.prev = _context.next) {\n          case 0:\n            _context.prev = 0;\n            _context.next = 3;\n            return login.all();\n\n          case 3:\n            data = _context.sent;\n            res.json(data);\n            _context.next = 11;\n            break;\n\n          case 7:\n            _context.prev = 7;\n            _context.t0 = _context[\"catch\"](0);\n            console.log(_context.t0);\n            res.sendStatus(\"500\");\n\n          case 11:\n          case \"end\":\n            return _context.stop();\n        }\n      }\n    }, _callee, null, [[0, 7]]);\n  }));\n\n  return function (_x, _x2) {\n    return _ref.apply(this, arguments);\n  };\n}());\nrouter.get('*', function (req, res) {\n  res.sendFile(path.resolve('src/client', 'index.html'));\n});\n/* harmony default export */ __webpack_exports__[\"default\"] = (router);\n\n//# sourceURL=webpack:///./src/server/routes.js?");
+
+/***/ }),
+
+/***/ "./src/server/server.js":
+/*!******************************!*\
+  !*** ./src/server/server.js ***!
+  \******************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routes */ \"./src/server/routes.js\");\n\n\nvar app = express__WEBPACK_IMPORTED_MODULE_0__();\napp.use(express__WEBPACK_IMPORTED_MODULE_0__[\"static\"]('public'));\napp.use(_routes__WEBPACK_IMPORTED_MODULE_1__[\"default\"]);\nvar port = process.env.PORT || 3000;\napp.listen(port, function () {\n  return console.log(\"Server listening on port: \".concat(port));\n});\n\n//# sourceURL=webpack:///./src/server/server.js?");
+
+/***/ }),
+
+/***/ 0:
+/*!***************************************************!*\
+  !*** multi babel-polyfill ./src/server/server.js ***!
+  \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar path = __webpack_require__(/*! path */ \"path\");\r\nvar express = __webpack_require__(/*! express */ \"express\");\r\nvar routes_1 = __webpack_require__(/*! ./routes */ \"./src/server/routes.ts\");\r\nvar app = express();\r\nvar p = path.join(__dirname, '../public');\r\nconsole.log(p);\r\napp.use(express.static(p));\r\napp.use(routes_1.default);\r\nvar port = process.env.PORT || 3000;\r\napp.listen(port, function () {\r\n    console.log(\"Server listening on port: \" + port);\r\n});\r\n\n\n//# sourceURL=webpack:///./src/server/server.ts?");
+eval("__webpack_require__(/*! babel-polyfill */\"babel-polyfill\");\nmodule.exports = __webpack_require__(/*! ./src/server/server.js */\"./src/server/server.js\");\n\n\n//# sourceURL=webpack:///multi_babel-polyfill_./src/server/server.js?");
+
+/***/ }),
+
+/***/ "@babel/runtime/helpers/asyncToGenerator":
+/*!**********************************************************!*\
+  !*** external "@babel/runtime/helpers/asyncToGenerator" ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"@babel/runtime/helpers/asyncToGenerator\");\n\n//# sourceURL=webpack:///external_%22@babel/runtime/helpers/asyncToGenerator%22?");
+
+/***/ }),
+
+/***/ "@babel/runtime/regenerator":
+/*!*********************************************!*\
+  !*** external "@babel/runtime/regenerator" ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"@babel/runtime/regenerator\");\n\n//# sourceURL=webpack:///external_%22@babel/runtime/regenerator%22?");
+
+/***/ }),
+
+/***/ "babel-polyfill":
+/*!*********************************!*\
+  !*** external "babel-polyfill" ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"babel-polyfill\");\n\n//# sourceURL=webpack:///external_%22babel-polyfill%22?");
 
 /***/ }),
 
@@ -118,6 +185,17 @@ eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nva
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"express\");\n\n//# sourceURL=webpack:///external_%22express%22?");
+
+/***/ }),
+
+/***/ "mysql":
+/*!************************!*\
+  !*** external "mysql" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"mysql\");\n\n//# sourceURL=webpack:///external_%22mysql%22?");
 
 /***/ }),
 

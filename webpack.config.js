@@ -1,66 +1,81 @@
 const path = require('path');
 var nodeExternals = require('webpack-node-externals');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 const serverConfig = {
     mode: process.env.NODE_ENV || 'development',
-    entry: './src/server/server.ts',
-    module: {
-        rules: [
-            {
-                test: /\.tsx?$/,
-                loader: 'ts-loader',
-                exclude: /node_modules/,
-                options: {
-                    configFile: 'tsconfig.server.json'
-                }
-            }
-        ]
-    },
-    resolve: {
-        extensions: ['.tsx', '.ts', '.js']
-    },
+    entry: ['babel-polyfill','./src/server/server.js'],
     output: {
-        filename: 'server.js',
-        path: path.resolve(__dirname, 'dist')
+      path: path.join(__dirname, 'dist'),
+      filename: 'server.js'
     },
     target: 'node',
     node: {
-        __dirname: false
+      // Need this when working with express, otherwise the build fails
+      __dirname: false,   // if you don't put this is, __dirname
+      __filename: false,  // and __filename return blank or /
     },
-    externals: [nodeExternals()]
-};
-
-const clientConfig = {
-    mode: process.env.NODE_ENV || 'development',
-    entry: './src/client/index.tsx',
-    devtool: 'inline-source-map',
+    externals: [nodeExternals()], // Need this to avoid error when working with Express
     module: {
       rules: [
         {
-            test: /\.tsx?$/,
-            loader: 'ts-loader',
-            exclude: /node_modules/,
-            options: {
-                configFile: 'tsconfig.client.json'
-            }
-        },
-        {
-            test: /\.scss$/,
-            use: [
-                'style-loader',
-                'css-loader',
-                'sass-loader',
-            ]
+          // Transpiles ES6-8 into ES5
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader"
+          }
         }
       ]
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js', '.css', '.scss']
-    },
-    output: {
-        filename: 'app.js',
-        path: path.resolve(__dirname, 'public/js')
+      extensions: ['*', '.js', '.jsx']
     }
+};
+
+const clientConfig = {
+    mode: process.env.NODE_ENV || 'development',
+    entry: './src/client/index.js',
+    output: {
+        path:  path.resolve(__dirname, 'public/js'),
+        filename: 'app.js'
+    },
+    devServer: {
+      historyApiFallback: true
+    },
+    devtool: 'inline-source-map',
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader"
+          }
+        },
+        {
+          test: /\.(css|sass|scss)$/,
+          use: [
+              'style-loader',
+              'css-loader',
+              'sass-loader',
+          ]
+        },
+        {
+          test: /\.(png|jpe?g|gif)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        }
+      ]
+    },
+    resolve: {
+        extensions: ['*', '.js', '.jsx']
+    },
 };
 
 module.exports = [serverConfig, clientConfig];
