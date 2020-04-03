@@ -1,6 +1,6 @@
 import mysql from './connection';
 
-export const all = () =>{
+export const all = (email, pass) =>{
     return new Promise ((resolve, reject)=>{
             mysql().query('SELECT * FROM usuarios', (err, results) =>{
                 if(err){
@@ -11,6 +11,7 @@ export const all = () =>{
         }
     )
 }
+
 
 export default {
     all

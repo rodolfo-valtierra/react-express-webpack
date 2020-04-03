@@ -1,15 +1,14 @@
 const path = require('path');
 var nodeExternals = require('webpack-node-externals');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 const serverConfig = {
     mode: process.env.NODE_ENV || 'development',
     entry: ['babel-polyfill','./src/server/server.js'],
     output: {
-      path: path.join(__dirname, 'dist'),
-      filename: 'server.js'
+      path: path.join(__dirname, '/dist'),
+      filename: 'server.js',
     },
     target: 'node',
     node: {
@@ -27,8 +26,27 @@ const serverConfig = {
           use: {
             loader: "babel-loader"
           }
+        },
+        {
+          test: /\.(css|sass|scss)$/,
+          use: [
+              'style-loader',
+              'css-loader',
+              'sass-loader',
+          ]
+        },
+        {
+          test: /\.(png|jpe?g|gif)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
         }
       ]
+    },
+    devServer: {
+      historyApiFallback: true
     },
     resolve: {
       extensions: ['*', '.js', '.jsx']
@@ -40,7 +58,7 @@ const clientConfig = {
     entry: './src/client/index.js',
     output: {
         path:  path.resolve(__dirname, 'public/js'),
-        filename: 'app.js'
+        filename: 'app.js',
     },
     devServer: {
       historyApiFallback: true
@@ -76,6 +94,9 @@ const clientConfig = {
     resolve: {
         extensions: ['*', '.js', '.jsx']
     },
+    plugins: [
+      new Dotenv()
+    ]
 };
 
 module.exports = [serverConfig, clientConfig];
