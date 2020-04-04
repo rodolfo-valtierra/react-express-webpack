@@ -88,7 +88,7 @@ const clientConfig = {
               loader: 'file-loader',
             },
           ],
-        }
+        },
       ]
     },
     resolve: {
